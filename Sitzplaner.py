@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import random, math, requests, re, subprocess, sys, os, urllib
 
-VERSION = "0.9"
+VERSION = "1.1"
 UPDATE_URL = "https://raw.githubusercontent.com/Skorpionel/Sitzplaner/refs/heads/main/Sitzplaner.py"
 EXE_UPDATE_URL = "https://github.com/Skorpionel/Sitzplaner/raw/refs/heads/main/Sitzplaner.exe"
 
@@ -96,9 +96,9 @@ class SitzplanApp:
     def __init__(self, root):
         self.root = root
         if os.path.basename(__file__).endswith(".py"):
-            self.root.title(f"{os.path.basename(__file__)[:-len('.py')]}")
+            self.root.title(f"{os.path.basename(__file__)[:-len('.py')]} V.{VERSION}")
         elif os.path.basename(__file__).endswith(".exe"):
-            self.root.title(f"{os.path.basename(__file__)[:-len('.exe')]}")
+            self.root.title(f"{os.path.basename(__file__)[:-len('.exe')]} V.{VERSION}")
         self.root.configure(bg=BG)
         self.root.geometry("1100x720")
         self.root.minsize(800, 560)
@@ -138,6 +138,22 @@ class SitzplanApp:
 
         knopf("Sitze mischen",      self._sitze_mischen)
         knopf("Alles zurücksetzen", self._zurücksetzen)
+
+        tk.Frame(leiste, bg=BG).pack(side="left", expand=True)
+
+        gh_btn = tk.Button(
+            leiste,
+            text="GitHub (Source Code)",
+            command=lambda: __import__("webbrowser").open("https://github.com/Skorpionel/Sitzplaner"),
+            bg=BTN_BG, fg=TEXT_COL, relief="flat",
+            font=("TkDefaultFont", 9),
+            padx=11, pady=4, cursor="hand2",
+            activebackground=BTN_ACT, activeforeground="white",
+            bd=0, highlightthickness=0
+        )
+        gh_btn.pack(side="right", padx=8, pady=8)
+        gh_btn.bind("<Enter>", lambda e: gh_btn.config(bg=BTN_HOV))
+        gh_btn.bind("<Leave>", lambda e: gh_btn.config(bg=BTN_BG))
 
         self.canvas = tk.Canvas(self.root, bg=CANVAS_BG, bd=0,
                                 highlightthickness=0, cursor="crosshair")
